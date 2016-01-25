@@ -1,0 +1,75 @@
+---
+output: word_document
+---
+====================================================================
+
+# Inferencial Data Analysis
+
+====================================================================
+
+## 1. Load the ToothGrowth data and perform some basic exploratory data analyses 
+
+Load and see the data
+```{r, echo=TRUE}
+library(datasets)
+data = ToothGrowth
+str(data)
+```
+
+Basic Exploratory Data Analysis of the data
+```{r, echo=TRUE}
+require(graphics)
+plot1 = coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
+       xlab = "ToothGrowth data: length vs dose, supplement type")
+```
+
+## 2. Basic Assumptions
+
+1. Poplulations are independent, that the variances between populations are different, a random population was used. 
+
+2. The population was comprised of similar guinea pigs, measurement error was accounted for.
+
+## 3. Null hypothesis & Confidence Interval
+
+### Supplement as a factor
+
+Assumption: Null Hypothesis says that there is no corellation between toothgrowth and supplement and therefore the difference in mean of toothgrowth between two supplements is zero.
+
+Lets test the null hypothesis
+```{r, echo=TRUE}
+t.test(len ~ supp, paired = F, var.equal = F, data = ToothGrowth)
+```
+
+Conclusion: A confidence interval of [-0.171, 7.571] does not allow us to reject the null hypothesis. Therefore our hypothesis that there is no correlation between delivery method and tooth length is strong.
+
+### Dosage as a factor
+
+Assumption: Null Hypothesis says that there is no corellation between toothgrowth and dosage and therefore the difference in mean of toothgrowth on different dosages is zero.
+
+To test dosage as a foactor, we test the toothgrowth data between different dosages.
+```{r,echo=TRUE}
+dose1 <- subset(ToothGrowth, dose %in% c(0.5, 1.0))
+dose2 <- subset(ToothGrowth, dose %in% c(0.5, 2.0))
+dose3 <- subset(ToothGrowth, dose %in% c(1.0, 2.0))
+```
+
+First we test between dosage 0.5 & 1
+```{r,echo=TRUE}
+t.test(len ~ dose, paired = F, var.equal = F, data = dose1)
+```
+
+Between dosage 0.5 & 2
+```{r, echo = TRUE}
+t.test(len ~ dose, paired = F, var.equal = F, data = dose2)
+```
+
+Between dosage 1 & 2
+```{r, echo=TRUE}
+t.test(len ~ dose, paired = F, var.equal = F, data = dose3)
+```
+
+Conclusions: The confidence intervals ([-11.98, -6.276] for doses 0.5 and 1.0, [-18.16, -12.83] for doses 0.5 and 2.0, and [-8.996, -3.734] for doses 1.0 and 2.0) allow for the rejection of the null hypothesis. 
+
+Hence we reject the null hypothesis that there is no relation between diferrent dosages. 
+
+Infact there is a strong corellation netween dosage and toothgrowth.

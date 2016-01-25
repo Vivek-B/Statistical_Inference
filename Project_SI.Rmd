@@ -1,0 +1,81 @@
+---
+output: word_document
+---
+======================================================================
+
+# Simulation Excercise
+
+======================================================================
+
+Simulate the exponential distribution:
+
+First set seed, so that same simulation can be reproduced.
+
+Then generate random exponential numbers with lambda = 0.2 & take its mean.
+
+Repeat the above process 1000 times with 'replicate' function. 
+
+And store this data in 'data' variable.
+
+```{r, echo=TRUE}
+size = 1000
+n = 40
+lambda = 0.2
+
+set.seed(2506)
+data <- (replicate(size, mean(rexp(n,lambda))))
+```
+
+## 1. Sample mean Vs Theoretical mean
+
+Calculate the mean of data and store it in sample_mean
+
+Calculate the theoretical mean and store it in theoretical_mean
+
+Print both of them
+```{r, echo=TRUE}
+sample_mean = mean(data)
+theoretical_mean = 1/lambda
+
+sample_mean
+theoretical_mean
+```
+We can see that the sample mean is sligthly less than theoretical mean
+
+
+Plot the histogram of the means exponential data & add vertical lines at sample mean and theoretical mean
+```{r, echo=TRUE}
+my_plot1 <- hist(data, main = "Sample mean Vs. Theoretical mean", xlab = "Means", ylab = "Frequency")
+abline(my_plot1, v=sample_mean , col="red")
+abline(my_plot1, v=theoretical_mean   , col="blue")
+```
+
+If zoomed in, it can be observed that the red line(indicating sample mean) is slightly to the left of blue line(indicating theoretical mean)
+
+## 2. Sample variance Vs. Theoretical Variance
+
+Store the sample variance of data in sample_variance 
+
+Store the theoretical variance in theoretical_variance
+```{r, echo=TRUE}
+sample_variance = var(data)
+theoretical_variance = ((1/lambda)^2/n) 
+```
+
+Print sample variance & theoretical variance
+```{r, echo=TRUE}
+sample_variance
+theoretical_variance  
+```
+
+We can clearly see that theoretical variance is greater than sample variance.
+
+## 3. Showing that the distribution is approximately normal 
+
+To confirm if the distribution is approximatley normal, plot Sample quantile Vs. Theoretical quantiles. The plot should lie on the 45 degree line of the QQ plot if its normal.
+```{r, echo=TRUE}
+qqnorm(data, main="Normal Q-Q Plot")
+qqline(data, col="2")
+```
+
+Since the line is approximately 45 degrees, we can say that our distributions is approimately normal.
